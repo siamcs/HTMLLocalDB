@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Books House</title>
+    <link rel="shortcut icon" type="image/png" href="room/favicon.png" />
+    <link rel="stylesheet" href="fashion.css" />
+    <script src="query.js"></script>
+    <title>Local Storage CRUD</title>
+    <link rel="stylesheet" href="css/app.css">
+    <script type="text/javascript">
+        function encodeImageFileAsURL(element) {
+            var file = element.files[0];
+            var kb = file.size / 1024;
+            if (kb > 10000) {
+                alert('File size should be less than 10mb');
+            } else if (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'video/mp4' || file.type === 'audio/mpeg') {
+                var reader = new FileReader();
+                reader.onloadend = function () {
+                    document.querySelectorAll('[id="image"]')[0].src = reader.result;
+                    document.querySelectorAll('[id="vData"]')[0].src = reader.result;
+                    document.getElementById('imageData').value = reader.result;
+                }
+                reader.readAsDataURL(file);
+            } else {
+                alert('Please Upload a mp4/jpeg/png/mp3 file');
+            }
+        }
+        function addContact() {
+            var contacts = localStorage.getItem('contacts');
+            if (contacts === null) {
+                contacts = [];
+            } else {
+                contacts = JSON.parse(contacts);
+            }
+            var contact = { 'contactId': contacts.length + 1, 'imageData': document.getElementById('imageData').value, 'vData': document.getElementById('vData').value };
+            contacts.push(contact);
+            localStorage.setItem('contacts', JSON.stringify(contacts));
+            reset();
+            alert("File added to Local Storage")
+        }
+        function reset() {
+            document.getElementById('contactId').value = '';
+            document.getElementById('imageData').value = '';
+            document.getElementById('imageFile').value = null;
+        }
+        reset();
+    </script>
+
+</head>
+<body>
+    <header>
+        <div id="hdlogo">
+            <img src="room/logo.png" alt="logo" width="75" height="50">
+        </div>
+        <div id="hdtxt">
+            <h2>Books House</h2>
+           
+            <button class="open-button" onclick="openForm()">Log in</button>
+
+            <div class="form-popup" id="myForm">
+
+                <form action="/action_page.php" class="form-container">
+                    <h1>Login</h1>
+
+                    <label for="email"><b>Email</b></label>
+                    <input type="text" placeholder="Enter Email" name="email" required>
+
+                    <label for="psw"><b>Password</b></label>
+                    <input type="password" placeholder="Enter Password" name="psw" required>
+
+                    <button type="submit" class="btn">Login</button>
+                    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                    <a href="index.html">Register now!!!</a>
+                </form>
+            </div>
+        </div>
+    </header>
+    <nav>
+        <a class="active" href="home.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="LocalStorage.html">Local Storage</a>
+        <a href="SessionStorage.html">Session Storage</a>
+        <a href="IndexDB.html">IndexDB</a>
+        <a href="WebSql.html">Web SQL</a>
+        <div class="search-container">
+            <form action="">
+                <input type="text" placeholder="Search.." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+
+    </nav>
+
+    <div class="container">
+
+        <div class="page-header-extended">
+
+        </div>
+
+        <div class="starter-template" style="width: 100%;">
+
+            <div class="info-table-header-block">
+                <button type="button" class="btn btn-primary add-new-button" data-toggle="modal" data-target="#addnewModal">
+                    Insert
+                </button>
+            </div>
+            <div class="modal fade" id="addnewModal" tabindex="-1" role="dialog" aria-labelledby="addnewModalTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="addnewModalTitle">Insert Member Information</h4>
+                        </div>
+
+                 
+
+                        <div class="modal-body">
+                            <form id="input_form" onsubmit="saveMemberInfo(); return false;">
+                                <div class="form-group">
+                                    <label for="first_name">
+                                        First Name
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" placeholder="Enter First Name" id="first_name" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="last_name">
+                                        Last Name
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" placeholder="Enter Last Name" id="last_name" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">
+                                        Email
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <input type="email" class="form-control" placeholder="Enter Email" id="email" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="d_o_b">
+                                        Date of Birth (mm/dd/yy)
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" placeholder="Enter Date of birth" id="d_o_b" required onkeypress="return false;" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="designation">
+                                        Designation
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" placeholder="Enter Designation" id="designation" required />
+                                </div>
+
+                                <div class="modal-footer-extended">
+                                    <button class="btn btn-primary">Create</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- User Create Modal End -->
+                    </div>
+                </div>
+            </div>
+
+            <table id="member_table" class="table table-bordered table-hover" style="color: black; width: 100%;">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>
+                            <a href="#" onclick="sortBy('first_name')">First Name</a>
+                            <i class="fa fa-sort"></i>
+                        </th>
+                        <th>
+                            <a href="#" onclick="sortBy('last_name')">Last Name</a>
+                            <i class="fa fa-sort"></i>
+                        </th>
+                        <th>
+                            <a href="#" onclick="sortBy('email')">Email</a>
+                            <i class="fa fa-sort"></i>
+                        </th>
+                        <th>
+                            <a href="#" onclick="sortBy('d_o_b')">Age</a>
+                            <i class="fa fa-sort"></i>
+                        </th>
+                        <th>
+                            <a href="#" onclick="sortBy('designation')">Designation</a>
+                            <i class="fa fa-sort"></i>
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+            </table>
+
+            <div class="show-table-info hide" style="width: 100%">
+                <div class="alert alert-info center" style="width: 100%">
+                    <strong>No Data Found, Please Enter Some Data</strong>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="show_user_info">
+        <div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="showModalTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="showModal">Member Information</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="show_first_name">First Name</label>
+                            <input type="text" class="form-control" id="show_first_name" value="" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="show_last_name">Last Name</label>
+                            <input type="text" class="form-control" id="show_last_name" value="" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="show_email">Email</label>
+                            <input type="email" class="form-control" id="show_email" value="" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="show_d_o_b">Date of Birth</label>
+                            <input type="text" class="form-control" id="show_d_o_b" value="" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="show_designation">Designation</label>
+                            <input type="text" class="form-control" id="show_designation" value="" disabled>
+                        </div>
+
+                        <div class="modal-footer-extended">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="show_user_info">
+        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="editModal">Edit Member Information</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form onsubmit="updateMemberData(); return false;">
+                            <div class="form-group">
+                                <label for="edit_first_name">
+                                    First Name
+                                    <span class="required-field">*</span>
+                                </label>
+                                <input type="text" class="form-control" id="edit_first_name" value="" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="edit_last_name">
+                                    Last Name
+                                    <span class="required-field">*</span>
+                                </label>
+                                <input type="text" class="form-control" id="edit_last_name" value="" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="edit_email">
+                                    Email
+                                    <span class="required-field">*</span>
+                                </label>
+                                <input type="email" class="form-control" id="edit_email" value="" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="edit_d_o_b">
+                                    Date of Birth
+                                    <span class="required-field">*</span>
+                                </label>
+                                <input type="text" class="form-control" id="edit_d_o_b" value="" required onkeypress="return false;" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="edit_designation">
+                                    Designation
+                                    <span class="required-field">*</span>
+                                </label>
+                                <input type="text" class="form-control" id="edit_designation" value="" required />
+                            </div>
+
+                            <div class="form-group">
+                                <input type="hidden" class="form-control" id="member_id">
+                            </div>
+
+                            <div class="modal-footer-extended">
+                                <button class="btn btn-success">Update</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <div id="show_user_info">
+        <div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteDialogTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="deleteDialog">Warning!</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Are you sure, want to delete this member? </h4>
+                        <input type="hidden" id="deleted-member-id" value="">
+                        <div class="modal-footer-extended">
+                            <button class="btn btn-danger" onclick="deleteMemberData()">Delete</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Delete Confirmation Dialog End -->
+    <br><br>
+    <div class="fileupload" style="margin-left: 30%; margin-right: 30%">
+        <div class="form-group" n style="text-align: center;">
+            <img id="image" src="" alt="Your Uploaded Image will be shown here" style="width:300px; height:200px;"/><br><br>
+            <video controls id="vData" autoplay style="width: 300px; height: 200px;">
+                <source src="" type="video/mpeg">
+            </video><br><br>
+            <input type="hidden" id="imageData" /><br><br>
+            <input type="file" class="form-control" required="required" id="imageFile" onchange="encodeImageFileAsURL(this);" value="Select Image" /><br>
+            <button onclick='addContact();' class="btnfl">Add File</button><br>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="js/app.js"></script>
+    <footer>
+        <div class="ftwodiv">
+            Contact Us
+            Address: Rampura Banasree, Dhaka - 1000<br />
+            Email: bhouse@gmail.com<br />
+            Contact Number: 01000-000000
+        </div>
+    </footer>
+
+</body>
+</html>

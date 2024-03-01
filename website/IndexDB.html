@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Books House</title>
+    <link rel="shortcut icon" type="image/png" href="room/favicon.png" />
+    <link rel="stylesheet" href="fashion.css" />
+    <script src="query.js"></script>
+    <script src="jquery-3.2.1.min.js"></script>
+    <script>
+        var indexedDB = window.indexedDB || window.mozIndexedDB ||
+            window.webkitIndexedDB || window.msIndexedDB;
+        var db;
+        var currentEdit = null;
+        $(document).ready(function () {
+            var openReq = indexedDB.open("DetailsDB", 1);
+            openReq.onupgradeneeded = function (e) {
+                db = e.target.result;
+                var store = db.createObjectStore("Details", {
+                    keyPath: "id",
+                    autoIncrement: true
+                });
+                console.log(store);
+            }
+            openReq.onsuccess = function (e) {
+                db = e.target.result;
+                console.log(db);
+                readAll();
+                $("#add").click(function () {
+                    if ($("#fname").val() != "" && $("#lname").val() != "" &&
+                        $("#email").val() != "" && $("#phone").val() != "") {
+                        var tx = db.transaction(["Details"], "readwrite");
+                        if (currentEdit == null) {
+                            var req = tx.objectStore("Details").add({
+                                FirstName: $("#fname").val(),
+                                LastName: $("#lname").val(),
+                                Email: $("#email").val(),
+                                Phone: $("#phone").val()
+                            });
+                            req.onsuccess = function (e) {
+                                console.log("Added data.....");
+                                alert("Data has been added succesfully")
+                                readAll();
+                            }
+                            $("#fname").val("");
+                            $("#lname").val("");
+                            $("#email").val("");
+                            $("#phone").val("");
+                            $("#fname").focus();
+                        }
+                        else {
+                            var req = tx.objectStore("Details").put({
+                                FirstName: $("#fname").val(),
+                                LastName: $("#lname").val(),
+                                Email: $("#email").val(),
+                                Phone: $("#phone").val(),
+                                id: currentEdit.id
+                            });
+                            req.onsuccess = function (e) {
+                                console.log("Added data.....");
+                                alert("Data has been Updated")
+                                readAll();
+                            }
+                            $("#fname").val("");
+                            $("#lname").val("");
+                            $("#email").val("");
+                            $("#phone").val("");
+                            $("#fname").focus();
+                        }
+                        $("#add").val("Add New"); currentEdit = null;
+                    }
+                    else {
+                        alert("Please fill up all field");
+                    }
+                })
+            }
+        })
+        function readAll() {
+            $("#tbl tbody").empty();
+            var tx = db.transaction(["Details"], "readonly");
+            var req = tx.objectStore("Details").openCursor();
+            req.onsuccess = function (e) {
+                var cursor = e.target.result;
+                if (!cursor) return;
+                $("#tbl tbody").append(
+                    "<tr>" +
+                    "<td>" + cursor.value.FirstName + "</td>" +
+                    "<td>" + cursor.value.LastName + "</td>" +
+                    "<td>" + cursor.value.Email + "</td>" +
+                    "<td>" + cursor.value.Phone + "</td>" +
+                    "<td>" + "<button class='edit' data-key='" + cursor.key +
+                    "'>Edit</button>|<button class='del' data-key='" + cursor.key +
+                    "'>Delete</button></td>"
+                    + "</tr>"
+                )
+                cursor.continue();
+            }
+            req.onerror = function (err) {
+                console.log(err);
+            }
+            tx.oncomplete = function () {
+                $(".del").click(function () {
+                    var id = $(this).attr('data-key');
+                    var row = $(this).parent().parent();
+                    var tx = db.transaction(["Details"], "readwrite");
+                    var store = tx.objectStore("Details");
+                    var req = store.delete(parseInt(id));
+                    req.onsuccess = function (e) {
+                        console.log("Data deleted succesfully....");
+                        alert("Data has been deleted succesfully")
+                        row.remove();
+                    }
+                    req.onerror = function (err) {
+                        console.log(err);
+                    }
+                });
+                $(".edit").click(function (evt) {
+                    evt.preventDefault();
+                    fillForm($(this).attr('data-key'));
+                })
+            }
+        }
+        function fillForm(id) {
+            var t = db.transaction(["Details"], "readwrite");
+            var objStore = t.objectStore("Details");
+            var request = objStore.get(parseInt(id));
+            request.onsuccess = function (evt) {
+                currentEdit = request.result;
+                console.log(currentEdit);
+                $("#fname").val(currentEdit.FirstName);
+                $("#lname").val(currentEdit.LastName);
+                $("#email").val(currentEdit.Email);
+                $("#phone").val(currentEdit.Phone);
+                $("#add").val("Update");
+            }
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <div id="hdlogo">
+            <img src="room/logo.png" alt="logo" width="75" height="50">
+        </div><hr>
+        <div id="hdtxt">
+            <h2>Books House</h2>
+            <button class="open-button" onclick="openForm()">Log in</button>
+            <div class="form-popup" id="myForm">
+                <form action="/action_page.php" class="form-container">
+                    <h1>Login</h1>
+                    <label for="email"><b>Email</b></label>
+                    <input type="email" placeholder="Enter Email" name="email" required>
+
+                    <label for="psw"><b>Password</b></label>
+                    <input type="password" placeholder="Enter Password" name="psw" required>
+
+                    <button type="submit" class="btn">Login</button>
+                    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                    <a href="index.html">Register now!!!</a>
+                </form>
+            </div>
+        </div>
+    </header>
+    <nav>
+        <a class="active" href="home.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="LocalStorage.html">Local Storage</a>
+        <a href="SessionStorage.html">Session Storage</a>
+        <a href="IndexDB.html">IndexDB</a>
+        <a href="WebSql.html">Web SQL</a>
+
+        <div class="search-container">
+            <form action="">
+                <input type="text" placeholder="Search.." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </nav>
+
+    <div style="overflow:auto">
+        <div class="menu1" style="overflow:auto;">
+            <div id="first_form">
+                <div id="dform">
+                    <div id="side" style="text-align: center;">
+                        <h2 style="text-align: center;">Information form</h2>
+                        <input type="text" id="fname" placeholder="First Name" />
+                        <input type="text" id="lname" placeholder="Last Name" />
+                        <input type="email" id="email" placeholder="Email" />
+                        <input type="text" id="phone" placeholder="Phone" /><br /><br />
+                        <input type="button" id="add" value="Insert" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="dform1">
+            <div id="abc">
+                <table border="0" cellpadding="4" id="tbl" color:black; text-align:left;">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    
+                        <tbody style="color:black;"></tbody>
+                    
+                </table>
+            </div>
+        </div>
+    </div>
+
+        <footer>
+            <div class="ftwodiv">
+                Contact Us
+                Address:Rampura Banasree, Dhaka - 1000<br />
+                Email: bhouse@gmail.com<br />
+                Contact Number: 01000-000000
+            </div>
+        </footer>
+
+</body>
+</html>

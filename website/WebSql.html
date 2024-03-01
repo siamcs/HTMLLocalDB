@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Books House</title>
+    <link rel="shortcut icon" type="image/png" href="room/favicon.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="fashion.css" />
+    <script src="query.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+        var Database_Name = 'MyDatabase';
+        var Version = 1.0;
+        var Text_Description = 'My First Web-SQL Example';
+        var Database_Size = 2 * 1024 * 1024;
+        var dbObj = openDatabase(Database_Name, Version, Text_Description, Database_Size);
+        dbObj.transaction(function (tx) {
+            tx.executeSql('CREATE TABLE IF NOT EXISTS Employee_Table (id unique, Name, Location,did)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS dept_Table (did unique, dName,estd)');
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd
+            }
+            if (mm < 10) {
+                mm = '0' + mm
+            }
+            var today = dd + '/' + mm + '/' + yyyy;
+            tx.executeSql('insert into dept_Table(did, dName, estd) values(1,"IT","' + today + '")');
+            tx.executeSql('insert into dept_Table(did, dName, estd) values(2,"Science","' + today + '")');
+            tx.executeSql('insert into dept_Table(did, dName, estd) values(3,"Arts","' + today + '")');
+            tx.executeSql('insert into dept_Table(did, dName, estd) values(4,"Commerce","' + today + '")');
+            alldetails();
+        });
+
+        function Insert() {
+            var id = document.getElementById("tbID").value;
+            var name = document.getElementById("tbName").value;
+            var location = document.getElementById("tbLocation").value;
+            var did = document.getElementById("tbLdept").value;
+            dbObj.transaction(function (tx) {
+                tx.executeSql('insert into Employee_Table(id, Name, Location,did) values(' + id + ',"' + name + '","' + location + '",' + did + ')');
+            });
+            alldetails();
+        }
+
+        function del() {
+            var id = document.getElementById("ddlid").value;
+          
+            dbObj.transaction(function (tx) {
+                tx.executeSql('delete from Employee_Table where id=' + id + '');
+            });
+            empidbind();
+            alldetails();
+        }
+
+        function myFunction() {
+            var id = document.getElementById("ddlid").value;
+            dbObj.transaction(function (tx) {
+                tx.executeSql('SELECT * from Employee_Table where id=' + id + '', [], function (tx, results) {
+                    document.getElementById("tbName").value = results.rows.item(0).Name;
+                    document.getElementById("tbLocation").value = results.rows.item(0).Location;
+                    document.getElementById("tbLdept").value = results.rows.item(0).did;
+                }, null);
+            });
+        }
+        function showdel() {
+            empidbind();
+            $('#tdorginal').hide();
+            $('#tdid').show();
+            $('#btnupdate').hide();
+            $('#btnInsert').hide();
+            $('#btndel').show();
+            $('#btninsertshw').show();
+            $('#btnupdateshw').show();
+            $('#btndeleteshw').hide();
+            ////////////
+            $('#rowName').hide();
+            $('#rowLocation').hide();
+            $('#rowdept').hide();
+        }
+
+        function showin() {
+            $('#tdid').hide();
+            $('#tdorginal').show();
+
+            $('#btnupdate').hide();
+            $('#btnInsert').show();
+            $('#btndel').hide();
+            $('#btninsertshw').hide();
+            $('#btnupdateshw').show();
+            $('#btndeleteshw').show();
+            $('#rowName').show();
+            $('#rowLocation').show();
+            $('#rowdept').show();
+
+            document.getElementById("tbID").value = '';
+            document.getElementById("tbName").value = '';
+            document.getElementById("tbLocation").value = '';
+            document.getElementById("tbLdept").value = '1';
+            empidbind();
+        }
+
+        function empidbind() {
+            dbObj.transaction(function (tx) {
+                tx.executeSql('SELECT * from Employee_Table', [], function (tx, results) {
+                    var len = results.rows.length, i;
+                    document.getElementById("ddlid").innerHTML = '';
+                    var str = '';
+                    for (i = 0; i < len; i++) {
+                        str += "<option value=" + results.rows.item(i).id + ">" + results.rows.item(i).id + "</option>";
+                        document.getElementById("ddlid").innerHTML += str;
+                        str = '';
+                    }
+                }, null);
+            });
+        }
+
+        function showupdte() {
+            empidbind();
+            $('#tdorginal').hide();
+            $('#tdid').show();
+            $('#btnupdate').show();
+            $('#btnInsert').hide();
+            $('#btndel').hide();
+            $('#btninsertshw').show();
+            $('#btnupdateshw').hide();
+            $('#btndeleteshw').show();
+            $('#rowName').show();
+            $('#rowLocation').show();
+            $('#rowdept').show();
+        }
+
+        function updte() {
+            var id = document.getElementById("ddlid").value;
+            var name = document.getElementById("tbName").value;
+            var location = document.getElementById("tbLocation").value;
+            var did = document.getElementById("tbLdept").value;
+
+            dbObj.transaction(function (tx) {
+                tx.executeSql('update Employee_Table set Name="' + name + '",Location="' + location + '",did=' + did + ' where id=' + id + '');
+            });
+            alldetails();
+        }
+
+        function alldetails() {
+            dbObj.transaction(function (tx) {
+                tx.executeSql('SELECT e.id,e.Name,e.Location,d.dName,d.did FROM Employee_Table e inner join dept_Table d on e.did=d.did ', [], function (tx, results) {
+                    var len = results.rows.length, i;
+          
+                    $("#tblGrid").find("tr:gt(0)").remove();
+                    var str = '';
+                    for (i = 0; i < len; i++) {
+                        str += "<tr>";
+                        str += "<td>" + results.rows.item(i).id + "</td>";
+                        str += "<td>" + results.rows.item(i).Name + "</td>";
+                        str += "<td>" + results.rows.item(i).Location + "</td>";
+                        str += "<td>" + results.rows.item(i).dName + "</td>";
+                        str += "</tr>";
+                        document.getElementById("tblGrid").innerHTML += str;
+                        str = '';
+                    }
+                }, null);
+            });
+        }
+
+        dbObj.transaction(function (tx) {
+            tx.executeSql('SELECT * from dept_Table', [], function (tx, results) {
+                var len = results.rows.length, i;
+                var str = '';
+                for (i = 0; i < len; i++) {
+                    str += "<option value=" + results.rows.item(i).did + ">" + results.rows.item(i).dName + "</option>";
+                    document.getElementById("tbLdept").innerHTML += str;
+                    str = '';
+                }
+            }, null);
+        });
+    </script>
+</head>
+
+<body style="font-family:Verdana;color:#aaaaaa;font-size:small;">
+    <header>
+        <div id="hdlogo">
+            <img src="room/logo.png" alt="logo" width="75" height="50">
+        </div><hr>
+        <div id="hdtxt">
+            <h2>Books House</h2>
+           
+            <button class="open-button" onclick="openForm()">Log in</button>
+
+            <div class="form-popup" id="myForm">
+
+                <form action="/action_page.php" class="form-container">
+                    <h1>Login</h1>
+
+                    <label for="email"><b>Email</b></label>
+                    <input type="email" placeholder="Enter Email" name="email" required>
+
+                    <label for="psw"><b>Password</b></label>
+                    <input type="password" placeholder="Enter Password" name="psw" required>
+
+                    <button type="submit" class="btn">Login</button>
+                    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                    <a href="index.html">Register now!!!</a>
+                </form>
+            </div>
+        </div>
+    </header>
+    <nav>
+        <a class="active" href="home.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="LocalStorage.html">Local Storage</a>
+        <a href="SessionStorage.html">Session Storage</a>
+        <a href="IndexDB.html">IndexDB</a>
+        <a href="WebSql.html">Web SQL</a>
+
+        <div class="search-container">
+            <form action="">
+                <input type="text" placeholder="Search.." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </nav>
+
+    <div style="overflow:auto">
+        <div class="menu1" style="overflow:auto;">
+            <div id="first_form">
+                <div id="dform">
+                    <div id="side" style="text-align: center;">
+                        <form>
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td id="tdorginal">
+                                        <input type="text" id="tbID" placeholder="Insert ID no." /><span style="color:red">*ID must be unique number</span>
+                                    </td>
+                                    <td id="tdid" style="display:none">
+                                        <select id="ddlid" onchange="myFunction()"></select>
+                                    </td>
+                                </tr>
+                                <tr id="rowName">
+                                    <td><input type="text" id="tbName" placeholder="Name" /></td>
+                                </tr>
+                                <tr id="rowLocation">
+                                    <td><input type="text" id="tbLocation" placeholder="Subject" /></td>
+                                </tr>
+                                <tr id="rowdept">
+                                    <td>
+                                        <select id="tbLdept" placeholder="Department"></select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                        <button id="btnInsert" onclick="Insert()">Save</button>
+                        <button id="btnupdate" onclick="updte()" style="display:none">Update</button>
+                        <button id="btndel" onclick="del()" style="display:none">Delete</button>
+                        <button id="btnupdateshw" onclick="showupdte()">update Employee details</button>
+                        <button id="btndeleteshw" onclick="showdel()">Delete Employee details</button>
+                        <button id="btninsertshw" onclick="showin()" style="display:none">save Employee details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="dform1" style="background-color:#f2f2f2;">
+            <div id="abc">
+                <table id="tblGrid" border="0" cellpadding="4" style="overflow-y:scroll; color:black; text-align:left;">
+                    <tr>
+                        <td>ID</td>
+                        <td>Name</td>
+                        <td>Subject</td>
+                        <td>Department</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="ftwodiv">
+            Contact Us
+            Address: Rampura Banasree, Dhaka - 1000<br />
+            Email: bhouse@gmail.com<br />
+            Contact Number: 01000-000000
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,296 @@
+* {
+    box-sizing: border-box;
+}
+#hdlogo {
+    position:absolute;
+}
+#hdtxt {
+    margin-left: 80px;
+    color: #6b3f26;
+}
+nav {
+    overflow: hidden;
+    padding-left:40px;
+    padding-right:40px;
+    padding-bottom:15px;
+}
+    nav a {
+        float: left;
+        display: block;
+        color: black;
+        text-align: center;
+        padding: 14px 16px;
+        font-size: 17px;
+    }
+        nav a:hover {
+            text-decoration:underline;
+        }
+        nav a.active {
+            background-color:saddlebrown;
+            color: white;
+        }
+    nav .search-container {
+        float: right;
+    }
+    nav input[type=text] {
+        padding: 6px;
+        margin-top: 8px;
+        font-size: 17px;
+  
+    }
+    nav .search-container button {
+        float: right;
+        padding: 6px 10px;
+        margin-top: 8px;
+        margin-right: 16px;
+        background: #ddd;
+        font-size: 17px;
+        cursor: pointer;
+    }
+        nav .search-container button:hover {
+            background: #ccc;
+        }
+.open-button {
+    background-color:saddlebrown;
+    border-radius:5px;
+    color: white;
+    padding: 10px 15px;
+    cursor: pointer;
+    opacity: 0.8;
+    position: absolute;
+    top: 23px;
+    right: 15px;
+}
+.form-popup {
+    display: none;
+    position: fixed;
+    top: 23px;
+    right: 15px;
+    border-radius:10px;
+    z-index: 9;
+}
+.form-container {
+    max-width: 300px;
+    padding: 10px;
+    background-color:white;
+    border-right:10px;
+}
+    .form-container input[type=text], .form-container input[type=password] {
+        width: 100%;
+        padding: 15px;
+        margin: 5px 0 22px 0;
+        background: #f1f1f1;
+    }
+        .form-container input[type=text]:focus, .form-container input[type=password]:focus {
+            background-color: #ddd;
+            outline: none;
+        }
+    .form-container .btn {
+        color: black;
+        padding: 16px 20px;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 10px;
+        opacity: 0.7;
+        border-radius:7px;
+    }
+    .form-container .cancel {
+        background-color: #a05017;
+    }
+    .form-container .btn:hover, .open-button:hover {
+        opacity: 1;
+        text-decoration:underline;
+    }
+.mySlides {
+    display: none
+}
+img {
+    vertical-align: middle;
+}
+.slideshow-container {
+    max-width: 800px;
+    position: relative;
+    margin: auto;
+}
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+}
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+    .prev:hover, .next:hover {
+        background-color: rgba(0,0,0,0.8);
+    }
+.text {
+    color: #f2f2f2;
+    font-size: 15px;
+    padding: 8px 12px;
+    position: absolute;
+    bottom: 8px;
+    width: 100%;
+    text-align: center;
+}
+.numbertext {
+    color: #f2f2f2;
+    font-size: 12px;
+    padding: 8px 12px;
+    position: absolute;
+}
+.dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+}
+    .active, .dot:hover {
+        background-color: #717171;
+    }
+
+
+.menu {
+    float: left;
+    width: 15%;
+    text-align: center;
+}
+.menu1 {
+    float: left;
+    width: 40%;
+    text-align: center;
+}
+    .menu a {
+      
+        padding: 8px;
+        margin-top: 7px;
+        display: block;
+        width: 100%;
+        color: black;
+    }
+        .menu a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+.main {
+    float: left;
+    width: 80%;
+    padding: 20px;
+}
+#afile{
+    padding-top:10px;
+    padding-bottom:10px;
+}
+#abook {
+    float: left;
+    padding:10px;
+}
+@media only screen and (max-width:600px) {
+    nav .search-container {
+        float: none;
+    }
+        nav a, nav input[type=text], nav .search-container button {
+            float: none;
+            display: block;
+            text-align: left;
+            width: 100%;
+            margin: 0;
+            padding: 14px;
+        }
+  
+    .menu, .menu1, .main, .right {
+        width: 100%;
+    }
+}
+#pera {
+    color:black;
+}
+#first_form {
+    color: black;
+}
+    #first_form input[type=text], input[type=number], input[type=email], input[type=password], select {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    #first_form input[type=submit], #send, #add, #save, #btnInsert, #btnupdate, #btndel, #btnupdateshw, #btndeleteshw, #btninsertshw {
+        width: 100%;
+        background-color: saddlebrown;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    #first_form input[type=submit]:hover {
+        background-color: sienna;
+    }
+#dradio, #ddate {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: white;
+}
+#dform {
+    float: left;
+    width:100%;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding:20px;
+    color: black;
+}
+dform1 {
+    float: left;
+    width: 60%;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+    color: black;
+}
+#right {
+    float: left;
+    width: 100%;
+    background-color: #f2f2f2;
+    color: black;
+    padding: 20px;
+    border: none;
+    border-radius: 4px;
+}
+#output {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: white;
+}
+
+footer {
+    background-color: blue;
+    text-align: center;
+    padding: 10px;
+    opacity:0.9;
+    margin-top: 7px;
+    color: white;
+}

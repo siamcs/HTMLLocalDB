@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Books House</title>
+    <link rel="shortcut icon" type="image/png" href="room/favicon.png" />
+    <link rel="stylesheet" href="fashion.css" />
+    <script src="query.js"></script>
+</head>
+<body>
+    <header>
+        <div id="hdlogo">
+            <img src="room/logo.png" alt="logo" width="75" height="50">
+        </div><hr>
+        <div id="hdtxt">
+            <h2>Books House</h2>
+            <button class="open-button" onclick="openForm()">Log in</button>
+            <div class="form-popup" id="myForm">
+                <form action="/action_page.php" class="form-container">
+                    <h1>Login</h1>
+                    <label for="email"><b>Email</b></label>
+                    <input type="email" placeholder="Enter Email" name="email" required>
+                    <label for="psw"><b>Password</b></label>
+                    <input type="password" placeholder="Enter Password" name="psw" required>
+                    <button type="submit" class="btn">Login</button>
+                    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                    <a href="index.html">Register now!!!</a>
+                </form>
+            </div>
+        </div>
+    </header>
+    <nav>
+        <a class="active" href="home.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="LocalStorage.html">Local Storage</a>
+        <a href="SessionStorage.html">Session Storage</a>
+        <a href="IndexDB.html">IndexDB</a>
+        <a href="WebSql.html">Web SQL</a>
+
+        <div class="search-container">
+            <form action="">
+                <input type="search" placeholder="Search.." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+
+    </nav>
+
+    <div class="slideshow-container">
+
+        <div class="mySlides fade">
+            <div class="numbertext">1 / 3</div>
+            <img src="room/ss/ss1.jpg" style="width:100%">
+            <div class="text"> Books are a uniquely portable magic. </div>
+        </div>
+
+        <div class="mySlides fade">
+            <div class="numbertext">2 / 3</div>
+            <img src="room/ss/ss2.jpg" style="width:100%">
+         
+        </div>
+
+        <div class="mySlides fade">
+            <div class="numbertext">3 / 3</div>
+            <img src="room/ss/ss3.jpg" style="width:100%">
+           
+        </div>
+
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+    </div>
+    <br>
+
+    <div style="text-align:center">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+    </div>
+    <script>
+        var slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("dot");
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+        }
+    </script>
+
+    <div style="overflow:auto">
+        <div class="menu">
+     <a href="programing.html">Programing</a>
+            <a href="biography.html">Biography</a>
+            <a href="comics.html">Comics</a>
+           
+        </div>
+        <div class="main">
+            <div id="afiel">
+                The last time you read
+                <div style="overflow:auto">
+                    <div id="abook">
+                        <img src="room/biography/b1.jpg" style="width:100px; height:160px;" />
+                    </div>
+                    <div id="abook">
+                        <img src="room/programing/p1.jpg" style="width:100px; height:160px;" />
+                    </div>
+
+                </div>
+            </div>
+         
+                <div style="overflow:auto">
+                    <div id="abook">
+                        <img src="room/biography/b1.jpg" style="width:100px; height:160px;" />
+                    </div>
+                    <div id="abook">
+                        <img src="room/programing/p1.jpg" style="width:100px; height:160px;" />
+                    </div>
+                    
+             
+            </div>
+        </div>
+    </div>  
+    <footer>
+            <div class="ftwodiv">
+                Contact Us
+                Address: Rampura Banasree, Dhaka - 1000<br />
+                Email: bhouse@gmail.com<br />
+                Contact Number: 01000-000000
+            </div>
+    </footer>
+
+</body>
+</html>

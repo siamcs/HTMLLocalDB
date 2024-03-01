@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+   
+    <title>Books House</title>
+    <link rel="shortcut icon" type="image/png" href="room/favicon.png" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="fashion.css" />
+    <script src="query.js"></script>
+    <script>
+        $(document).ready(() => {
+            $("#send").click(() => {
+                if (validateFormData() == true) {
+                    $.ajax({
+                        url: "/porasuna",
+                        type: "get",
+                        dataType: "json",
+                        data: {
+                            first_name: $("#first_name").val(),
+                            last_name: $("#last_name").val(),
+                            gender: $("#gender").val(),
+                            dob: $("#dob").val(),
+                            mnumber: $("#mnumber").val(),
+                            email: $("#email").val(),
+                            password: $("#password").val(),
+                        },
+                        success: (result) => {
+                            $("#output").html(`
+                                    Server Message: ${result.message}
+                                    <br />
+                                    First Name: ${result.first_name}
+                                    <br />
+                                    Last Name: ${result.last_name}
+                                    <br />
+                                    Gender: ${result.gender}
+                                    <br />
+                                    Date of Birth: ${result.dob}
+                                    <br />
+                                    Mobile Number: ${result.mnumber}
+                                    <br />
+                                    Email: ${result.email}
+                                    <br />
+                                    Password: ${result.password}`);
+                            $("#output").show();
+                        }
+                    });
+                }
+            });
+        });
+        function validateFormData() {
+            var isValid = true;
+            var first_name = $("#first_name").val();
+            var last_name = $("#last_name").val();
+            var gender = $("#gender").val();
+            var dob = $("#dob").val();
+            var mnumber = $("#mnumber").val();
+            var email = $("#email").val();
+            var password = $("#password").val();
+            if (first_name == null || first_name == "") {
+                isValid = false;
+                alert("Please Enter Your First Name");
+            }
+            else if (last_name == null || last_name == "") {
+                isValid = false;
+                alert("Please Enter Your Last Name");
+            }
+            else if (gender == null || gender == "") {
+                isValid = false;
+                alert("Please Mark Your Gender");
+            }
+            else if (dob == null || dob == "") {
+                isValid = false;
+                alert("Please Enter Your Date Of Birth");
+            }
+            else if (mnumber == null || mnumber == "") {
+                isValid = false;
+                alert("Please Enter Your Mobile Number");
+            }
+            else if (email == null || email == "") {
+                isValid = false;
+                alert("Please Enter Your Mobile Number");
+            }
+            else if (password == null || password == "") {
+                isValid = false;
+                alert("Please Enter a Password");
+            }
+            return isValid;
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <div id="hdlogo">
+            <img src="room/logo.png" alt="logo" width="75" height="50">
+        </div><hr>
+        <div id="hdtxt">
+            <h2>Books House</h2>
+            <div class="form-popup" id="myForm">
+                <form action="/action_page.php" class="form-container">
+                    <h1>Login</h1>
+                    <label for="email"><b>Email</b></label>
+                    <input type="email" placeholder="Enter Email" name="email" required>
+                    <label for="psw"><b>Password</b></label>
+                    <input type="password" placeholder="Enter Password" name="psw" required>
+
+                    <button type="submit" class="btn">Login</button>
+                    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                    <a href="index.html">Register now!!!</a>
+                </form>
+            </div>
+            </div>
+    </header>
+    <nav style="font-size:small">
+        <a class="active" href="home.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="LocalStorage.html">Local Storage</a>
+        <a href="SessionStorage.html">Session Storage</a>
+        <a href="IndexDB.html">IndexDB</a>
+        <a href="WebSql.html">Web SQL</a>
+
+        <div class="search-container">
+            <form action="">
+                <input type="text" placeholder="Search.." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+
+    </nav>
+
+    <div class="slideshow-container">
+
+        <div class="mySlides fade">
+            <div class="numbertext">1 / 3</div>
+            <img src="room/ss/ss1.jpg" style="width:100%">
+        </div>
+
+        <div class="mySlides fade">
+            <div class="numbertext">2 / 3</div>
+            <img src="room/ss/ss2.jpg" style="width:100%">
+        </div>
+
+        <div class="mySlides fade">
+            <div class="numbertext">3 / 3</div>
+            <img src="room/ss/ss3.jpg" style="width:100%">
+        
+
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+    </div>
+    <br>
+
+    <div style="text-align:center">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+    </div>
+    <script>
+        var slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("dot");
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+        }
+    </script>
+
+    <div style="overflow:auto">
+        <div class="menu">
+           <a href="programing.html">Programing</a>
+            <a href="biography.html">Biography</a>
+            <a href="comics.html">Comics</a>
+            
+        </div>
+
+        <div class="main" style="overflow:auto">
+            <form id="first_form" method="post" action="">
+                <h3>Registration Form</h3>
+
+                <div id="dform">
+                    <h4>Personal Information</h4>
+                    <div>
+                        <label for="first_name">First Name:</label><br />
+                        <input type="text" id="first_name" name="first_name" placeholder="enter your first name"/>
+                    </div>
+                    <div>
+                        <label for="last_name">Last Name:</label><br />
+                        <input type="text" id="last_name" name="last_name" placeholder="enter your last name"/>
+                    </div>
+                    <div>
+                        <label for="gender">Gender:</label><br />
+                        <div id="dradio">
+                            <input type="radio" name="gender" id="gender" value="female" />Female<br>
+                            <input type="radio" name="gender" id="gender" value="male" />Male<br>
+                        </div>
+                        <label id="errorGender" style="color:red; font-size:small;"></label>
+                    </div>
+                    <div id="ddob">
+                        <label for="dob">Date of Birth:</label><br />
+                        <div id="ddate">
+                            <input type="date" name="dob" id="dob"><br />
+                        </div>
+                        <label id="errordob" style="color:red; font-size:small;"></label>
+                    </div>
+                    <div>
+                        <label for="number">Mobile Number:</label><br />
+                        <input type="number" id="number" name="number" placeholder="enter your mobile number"/>
+                    </div>
+
+                    <h4>Registering Email</h4>
+                    <div>
+                        <label for="email">Email:</label><br />
+                        <input type="email" id="email" name="email" placeholder="enter your email address"/>
+                    </div>
+                    <div>
+                        <label for="password">Password:</label><br />
+                        <input type="password" id="password" name="password" placeholder="******"/>
+                                </div>
+                    <button id="send" type="button">Submit</button>
+                </div>
+                <div id="output" style="display:none">
+                </div>
+            </form> 
+        </div>        
+    </div>
+    <footer>
+        <div class="ftwodiv">
+            Contact Us
+            Address:Rampura Banasree, Dhaka - 1000<br />
+            Email: bhouse@gmail.com<br />
+            Contact Number: 01000-000000
+        </div>
+    </footer>
+    </body>
+</html>

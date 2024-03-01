@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Books House</title>
+    <link rel="shortcut icon" type="image/png" href="room/favicon.png" />
+    <link rel="stylesheet" href="fashion.css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="query.js"></script>
+    <script src="jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var contacts = getContacts();
+            showContacts(contacts);
+            $("#save").click(function () {
+                var contact = {
+                    id: $("#txtid").val(),
+                    name: $("#txtname").val(),
+                    email: $("#txtemail").val(),
+                    phone: $("#txtphone").val()
+                };
+                console.log(contact);
+                contacts.push(contact);
+                sessionStorage.setItem("userData", JSON.stringify(contacts));
+                showContacts(contacts);
+            })
+        });
+        function getContacts() {
+            var data = sessionStorage.getItem("userData");
+            var contacts = data ? JSON.parse(data) : [];
+            return contacts;
+        }
+        function showContacts(contacts) {
+            $("#tbl tbody").empty();
+            $.each(contacts, function (k, v) {
+                $("#tbl tbody").append("<tr><td>" + v.id +
+                    "</td><td>" + v.name +
+                    "</td><td>" + v.email +
+                    "</td><td>" + v.phone + "</td></tr>");
+            });
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <div id="hdlogo">
+            <img src="room/logo.png" alt="logo" width="75" height="50">
+        </div><hr>
+        <div id="hdtxt">
+            <h2>Books House</h2>
+     
+            <button class="open-button" onclick="openForm()">Log in</button>
+
+            <div class="form-popup" id="myForm">
+
+                <form action="/action_page.php" class="form-container">
+                    <h1>Login</h1>
+
+                    <label for="email"><b>Email</b></label>
+                    <input type="text" placeholder="Enter Email" name="email" required>
+
+                    <label for="psw"><b>Password</b></label>
+                    <input type="password" placeholder="Enter Password" name="psw" required>
+
+                    <button type="submit" class="btn">Login</button>
+                    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                    <a href="index.html">Register now!!!</a>
+                </form>
+            </div>
+        </div>
+    </header>
+    <nav>
+        <a class="active" href="home.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="LocalStorage.html">Local Storage</a>
+        <a href="SessionStorage.html">Session Storage</a>
+        <a href="IndexDB.html">IndexDB</a>
+        <a href="WebSql.html">Web SQL</a>
+
+        <div class="search-container">
+            <form action="">
+                <input type="text" placeholder="Search.." name="search">
+                <button type="submit"><class="fa fa-search"></button>
+            </form>
+        </div>
+    </nav>
+    <div style="overflow:auto">
+        <div class="menu1" style="overflow:auto;">
+            <div id="first_form">
+                <div id="dform">
+                    <div id="side" style="text-align: center;">
+                        <h2 style="text-align: center;">Session Storage</h2>
+                        <input type="text" required="required" placeholder="ID" id="txtid" />
+                        <input type="text" required="required" placeholder="Name" id="txtname" />
+                        <input type="text" placeholder="Email" required="required" id="txtemail" />
+                        <input type="text" required="required" placeholder="Phone" id="txtphone" /><br /><br />
+                        <button type="submit" id="save">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="dform1" style="background-color:#f2f2f2;">
+            <div id="abc">
+                <table border="0" cellpadding="4" id="tbl" style="overflow-y:scroll; color:black; text-align:left;">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Full Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody scope="row" style="color:black;"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="ftwodiv">
+            Contact Us
+            Address:Books House, Dhaka - 1000<br />
+            Email:bhouse@gmail.com<br />
+            Contact Number: 01000-000000
+        </div>
+    </footer>
+</body>
+</html>
